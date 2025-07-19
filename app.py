@@ -4,11 +4,11 @@ import joblib
 import pandas as pd
 
 app = Flask(__name__)
-model = joblib.load('groundwater_model.pkl')  # Ensure this file is in the same folder
+model = joblib.load('groundwater_model.pkl')
 
 @app.route('/')
 def home():
-    return jsonify({"message": "Groundwater AQI Prediction API is running!"})
+    return jsonify({"message": "Groundwater Prediction API is running!"})
 
 @app.route('/predict', methods=['POST'])
 def predict():
