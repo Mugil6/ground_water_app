@@ -7,7 +7,7 @@ import requests
 model = joblib.load("groundwater_model.pkl")
 
 # Load CSV to get State-District mapping
-df = pd.read_csv("groundwater_data.csv")
+df = pd.read_csv("cleaned_groundwater.csv")
 df.dropna(subset=['State', 'District'], inplace=True)
 state_district_map = df.groupby('State')['District'].unique().to_dict()
 
