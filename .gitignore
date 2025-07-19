@@ -9,6 +9,6 @@ ENV/
 
 .DS_Store
 
-*.pkl
-*.csv
+
+
 *.xlsx
