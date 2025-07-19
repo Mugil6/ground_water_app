@@ -1,30 +1,52 @@
 import streamlit as st
-import joblib
 import pandas as pd
+import joblib
+import requests
 
-# Load the trained model
+# Load model
 model = joblib.load("groundwater_model.pkl")
 
-# Streamlit UI
-st.title("Groundwater Level Prediction")
-st.markdown("Enter the features below to predict the average groundwater depth:")
+# Load CSV to get State-District mapping
+df = pd.read_csv("groundwater_data.csv")
+df.dropna(subset=['State', 'District'], inplace=True)
+state_district_map = df.groupby('State')['District'].unique().to_dict()
 
-# Example features – adjust to match your model's training data
-district = st.text_input("District")
-year = st.number_input("Year", min_value=2000, max_value=2050, step=1)
-season = st.selectbox("Season", ["Pre Monsoon", "Post Monsoon"])
+# Page setup
+st.set_page_config(page_title="Groundwater Level Predictor", layout="centered")
+st.title("💧 Groundwater Depletion Prediction")
+st.markdown("Use this app to predict average groundwater depth based on State, District, Year, and Monsoon type.")
 
-# Prepare input features
-if st.button("Predict Groundwater Depth"):
-    try:
-        # Prepare dataframe - modify keys to match your model's feature columns
-        input_data = pd.DataFrame([{
-            "District": district,
-            "Year": year,
-            "Season": season
-        }])
-        
-        prediction = model.predict(input_data)[0]
-        st.success(f"Predicted Average Groundwater Depth: {round(prediction, 2)} meters")
-    except Exception as e:
-        st.error(f"Error during prediction: {e}")
+# Sidebar
+st.sidebar.image("https://img.icons8.com/color/96/groundwater.png", width=100)
+st.sidebar.markdown("### About")
+st.sidebar.markdown("This app uses an ML model to predict groundwater levels using trained historical data.")
+
+# Dropdowns
+state = st.selectbox("Select State", list(state_district_map.keys()))
+district = st.selectbox("Select District", sorted(state_district_map[state]))
+
+# Year and monsoon input
+year = st.number_input("Enter Year", min_value=2000, max_value=2050, step=1)
+monsoon = st.radio("Select Season", ['Pre Monsoon', 'Post Monsoon'])
+
+# Predict
+if st.button("🔍 Predict Groundwater Level"):
+    if state and district and year and monsoon:
+        try:
+            input_data = {
+                'State': state,
+                'District': district,
+                'Year': year,
+                'Season': monsoon
+            }
+
+            # Convert input to DataFrame
+            input_df = pd.DataFrame([input_data])
+
+            prediction = model.predict(input_df)[0]
+
+            st.success(f"✅ Predicted Avg Groundwater Depth: **{round(prediction, 2)} meters (mbgl)**")
+        except Exception as e:
+            st.error(f"Error during prediction: {str(e)}")
+    else:
+        st.warning("Please fill all the fields to get a prediction.")
