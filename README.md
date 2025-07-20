@@ -57,6 +57,17 @@ This project is an end-to-end \*\*MLOps application\*\* that predicts groundwate
 4\. Send POST requests to `/predict` with JSON input:  
 
 
+⚠️ Data Limitations
+
+> ❗ **Please note the following constraints of the current model:**
+
+- 📉 **Rainfall data is only available till 2017**, while groundwater data starts from 2020.  
+  Hence, rainfall has **not been directly used** in the current prediction model.
+- 🌦 Future versions may use **forecasted rainfall** to enhance accuracy.
+- 🧪 Model is trained on **only 4 years** of groundwater data, which may limit generalization.
+- 📍 Predictions are **district-level**, while rainfall data is **region-level**, making direct mapping complex.
+
+
 
 
 
