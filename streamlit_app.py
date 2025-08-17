@@ -26,7 +26,7 @@ state = st.selectbox("Select State", list(state_district_map.keys()))
 district = st.selectbox("Select District", sorted(state_district_map[state]))
 
 # Year and monsoon input
-year = st.radio("Select Year", ['2025, 2026, 2027'])
+year = st.selectbox("Select Year", [2025, 2026, 2027])
 monsoon = st.radio("Select Season", ['Pre Monsoon', 'Post Monsoon'])
 
 # Predict
