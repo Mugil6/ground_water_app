@@ -19,14 +19,14 @@ st.markdown("Use this app to predict average groundwater depth based on State, D
 # Sidebar
 st.sidebar.image("https://img.icons8.com/color/96/groundwater.png", width=100)
 st.sidebar.markdown("### About")
-st.sidebar.markdown("This app uses an ML model to predict groundwater levels using trained historical data.")
+st.sidebar.markdown("This app uses an ML model to predict groundwater levels for the next 2 years using trained historical data.")
 
 # Dropdowns
 state = st.selectbox("Select State", list(state_district_map.keys()))
 district = st.selectbox("Select District", sorted(state_district_map[state]))
 
 # Year and monsoon input
-year = st.number_input("Enter Year", min_value=2000, max_value=2050, step=1)
+year = st.radio("Select Year", ['2025, 2026, 2027'])
 monsoon = st.radio("Select Season", ['Pre Monsoon', 'Post Monsoon'])
 
 # Predict
